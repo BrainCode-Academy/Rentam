@@ -45,5 +45,27 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const role = document.querySelector('select.form-select').value;
+            const name = document.querySelector('input[type="text"]').value;
+            const email = document.querySelector('input[type="email"]').value;
+            
+            if (role === 'agent') {
+                // Save basic info to process on the agent registration page
+                localStorage.setItem('tempAgentName', name);
+                localStorage.setItem('tempAgentEmail', email);
+                alert("Agent Profile requires further Verification. Redirecting to Application Form...");
+                window.location.href = 'agent-register.html';
+            } else {
+                // Automatically log them in as a regular buyer user locally
+                localStorage.setItem('rentamRole', 'user');
+                alert("Account created successfully! Welcome to Rentam.");
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
 </body>
 </html>

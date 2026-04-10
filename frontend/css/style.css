@@ -68,13 +68,10 @@ body {
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(to right, rgba(10, 38, 71, 0.9), rgba(10, 38, 71, 0.6)), url('https://images.unsplash.com/photo-1518780664697-55e3ad937233?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
     color: var(--white);
     padding: 120px 0 150px 0;
     text-align: center;
+    overflow: hidden;
 }
 
 .search-box {

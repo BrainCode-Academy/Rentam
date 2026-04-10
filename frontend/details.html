@@ -40,8 +40,14 @@
                 </div>
             </div>
             <div class="col-lg-4">
-                <div class="card p-4 sticky-top" style="top: 100px;">
+                <div class="card p-4 border-0 shadow-sm sticky-top" style="top: 100px;">
                     <h2 class="price-tag mb-3">₦250,000 <small class="text-muted">/ yr</small></h2>
+                    
+                    <div class="alert alert-secondary py-2 px-3 mb-4" style="font-size: 13px; border-left: 4px solid var(--secondary-color);">
+                        <i class="fas fa-lock text-primary me-1"></i> <strong>Safe Data & Escrow Guarantee</strong><br>
+                        Rentam charges a standard <strong>10% connection fee (₦25,000)</strong>. This fee goes to the platform to secure your data and ensure the agent delivers precisely as promised.
+                    </div>
+
                     <ul class="list-unstyled mb-4">
                         <li><i class="fas fa-check-circle text-success me-2"></i> Running Water</li>
                         <li><i class="fas fa-check-circle text-success me-2"></i> Secure Fence</li>
@@ -61,7 +67,10 @@
     </div>
 
     <!-- AI Assistant -->
-    <div id="winner-chat-bubble" onclick="toggleChat()"><i class="fas fa-robot"></i></div>
+    <div id="winner-chat-bubble" onclick="toggleChat()">
+        <i class="fas fa-robot"></i>
+        <span class="ms-2">AI Agent Winner</span>
+    </div>
     <div id="chat-window">
         <!-- Same as index.html header/body/footer -->
         <div class="chat-header"><span>Winner AI</span><button class="btn btn-sm text-white" onclick="toggleChat()">X</button></div>

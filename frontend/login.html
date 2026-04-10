@@ -21,11 +21,11 @@
                     <form id="loginForm">
                         <div class="mb-3">
                             <label class="form-label">Email</label>
-                            <input type="email" class="form-control" required>
+                            <input type="email" id="email" class="form-control" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Password</label>
-                            <input type="password" class="form-control" required>
+                            <input type="password" id="password" class="form-control" required>
                         </div>
                         <button type="submit" class="btn btn-primary w-100 py-2">Login</button>
                     </form>
@@ -34,5 +34,37 @@
             </div>
         </div>
     </div>
+
+    <!-- Login Authentication Script -->
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault(); // Stop page from refreshing
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Simple validation check against our Default Test accounts mapping
+            if(password !== 'password123') {
+                alert("Incorrect password. Please try password123");
+                return;
+            }
+
+            if(email === 'admin@rentam.com') {
+                localStorage.setItem('rentamRole', 'admin');
+                alert('Welcome System Admin! Redirecting to dashboard...');
+                window.location.href = 'admin-dashboard.html';
+            } else if (email === 'agent@rentam.com') {
+                localStorage.setItem('rentamRole', 'agent');
+                alert('Welcome verified Agent! Redirecting to your listings...');
+                window.location.href = 'listings.html';
+            } else if (email === 'buyer@rentam.com') {
+                localStorage.setItem('rentamRole', 'user');
+                alert('Welcome Buyer! Find your next home.');
+                window.location.href = 'index.html';
+            } else {
+                alert('Account not found in test database. Please register.');
+            }
+        });
+    </script>
 </body>
 </html>

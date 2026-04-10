@@ -21,19 +21,19 @@
                     <form id="agentRegForm">
                         <div class="mb-3">
                             <label class="form-label">Full Name</label>
-                            <input type="text" class="form-control" placeholder="Enter your full name" required>
+                            <input type="text" id="agentName" class="form-control" placeholder="Enter your full name" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Business Name</label>
-                            <input type="text" class="form-control" placeholder="Estate name or Personal Brand" required>
+                            <input type="text" id="businessName" class="form-control" placeholder="Estate name or Personal Brand" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Email Address</label>
-                            <input type="email" class="form-control" required>
+                            <input type="email" id="agentEmail" class="form-control" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Phone Number</label>
-                            <input type="tel" class="form-control" placeholder="+234..." required>
+                            <input type="tel" id="agentPhone" class="form-control" placeholder="+234..." required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Upload ID Card (NIN/Voter's/Driver's)</label>
@@ -44,7 +44,35 @@
                     <p class="text-center mt-3"><a href="login.html" class="text-decoration-none">Already have an account? Login</a></p>
                 </div>
             </div>
-        </div>
     </div>
+    
+    <script>
+        // Auto-fill from signup if they came from there
+        if(localStorage.getItem('tempAgentName')) {
+            document.getElementById('agentName').value = localStorage.getItem('tempAgentName');
+            document.getElementById('agentEmail').value = localStorage.getItem('tempAgentEmail');
+        }
+
+        document.getElementById('agentRegForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const agent = {
+                id: 'agent-' + Date.now(),
+                name: document.getElementById('agentName').value,
+                businessName: document.getElementById('businessName').value,
+                email: document.getElementById('agentEmail').value,
+                phone: document.getElementById('agentPhone').value,
+                date: new Date().toLocaleDateString()
+            };
+
+            // Fetch existing agents from local storage
+            let pendingAgents = JSON.parse(localStorage.getItem('pendingAgents') || '[]');
+            pendingAgents.push(agent);
+            localStorage.setItem('pendingAgents', JSON.stringify(pendingAgents));
+
+            alert("Registration successful! Your application has been sent to the Admin Dashboard for approval. You will receive an email shortly.");
+            window.location.href = 'index.html';
+        });
+    </script>
 </body>
 </html>

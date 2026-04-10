@@ -26,6 +26,8 @@ app.use('/api/properties', require('./routes/propertyRoutes'));
 app.use('/api/agents', require('./routes/agentRoutes'));
 // Admin Routes
 app.use('/api/admin', require('./routes/adminRoutes'));
+// Chat AI Routes
+app.use('/api/chat', require('./routes/chatRoutes'));
 
 // Database Connection
 const PORT = process.env.PORT || 5000;

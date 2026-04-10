@@ -66,7 +66,7 @@
         </div>
         <hr class="mx-3 opacity-25">
         <a href="#dashboard" class="active" onclick="switchTab('dashboard')"><i class="fas fa-home me-2"></i> Dashboard</a>
-        <a href="#agents" onclick="switchTab('agents')"><i class="fas fa-id-card me-2"></i> Pending Agents <span class="badge bg-danger ms-2">3</span></a>
+        <a href="#agents" onclick="switchTab('agents')"><i class="fas fa-id-card me-2"></i> Pending Agents <span id="agentCountBadge1" class="badge bg-danger ms-2">2</span></a>
         <a href="#properties" onclick="switchTab('properties')"><i class="fas fa-building me-2"></i> Pending Properties <span class="badge bg-warning text-dark ms-2">5</span></a>
         <a href="index.html" class="mt-5 text-danger"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
     </div>
@@ -97,7 +97,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <p class="text-muted mb-1 fw-bold">Agents to Verify</p>
-                                <h3 class="fw-bold mb-0">3</h3>
+                                <h3 class="fw-bold mb-0" id="agentCountBadge2">2</h3>
                             </div>
                             <div class="fs-1 bg-soft-primary p-3 rounded-circle"><i class="fas fa-user-clock"></i></div>
                         </div>
@@ -162,7 +162,7 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="agentsTableBody">
                             <tr id="agent-row-1">
                                 <td>
                                     <h6 class="mb-0 fw-bold">Chinedu Okafor</h6>
@@ -249,6 +249,44 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
+        // Load Dynamic Local Agents
+        document.addEventListener('DOMContentLoaded', () => {
+            let pendingAgents = JSON.parse(localStorage.getItem('pendingAgents') || '[]');
+            
+            if(pendingAgents.length > 0) {
+                const tbody = document.getElementById('agentsTableBody');
+                
+                pendingAgents.forEach(agent => {
+                    const rowId = agent.id;
+                    const cleanName = agent.name.split(' ')[0] || 'Agent';
+                    tbody.innerHTML += `
+                        <tr id="${rowId}">
+                            <td>
+                                <h6 class="mb-0 fw-bold text-primary">${agent.name} <span class="badge bg-info ms-1">NEW</span></h6>
+                                <small class="text-muted">Reg: ${agent.date}</small>
+                            </td>
+                            <td>${agent.businessName}</td>
+                            <td>
+                                ${agent.email}<br>
+                                <small class="text-muted"><i class="fab fa-whatsapp text-success"></i> ${agent.phone}</small>
+                            </td>
+                            <td><a href="#" class="btn btn-sm btn-outline-secondary"><i class="fas fa-id-card"></i> View Docs</a></td>
+                            <td><span class="badge bg-warning text-dark">Pending</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-success shadow-sm me-1" onclick="approveAgent('${rowId}', '${cleanName}')"><i class="fas fa-check"></i> Approve</button>
+                                <button class="btn btn-sm btn-danger shadow-sm" onclick="rejectRow('${rowId}')"><i class="fas fa-times"></i></button>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                // Update Counts
+                const totalAgents = 2 + pendingAgents.length;
+                document.getElementById('agentCountBadge1').innerText = totalAgents;
+                document.getElementById('agentCountBadge2').innerText = totalAgents;
+            }
+        });
+
         // UI Logic for Switching Tabs
         function switchTab(tabId) {
             // Hide all tabs
