@@ -36,10 +36,15 @@ const MONGODB_URI = process.env.MONGODB_URI;
 mongoose.connect(MONGODB_URI)
     .then(() => {
         console.log('MongoDB Connected');
-        app.listen(PORT, () => {
-            console.log(`Server running on port ${PORT}`);
-        });
+        // Only start server if not running on Vercel
+        if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+            app.listen(PORT, () => {
+                console.log(`Server running on port ${PORT}`);
+            });
+        }
     })
     .catch(err => {
         console.error('MongoDB connection error:', err);
     });
+
+module.exports = app;
