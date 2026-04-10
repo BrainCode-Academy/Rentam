@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rentam | Trusted Student & Affordable Housing Nigeria</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <img src="rentam logo.jpeg" alt="Rentam Logo" height="40" class="rounded logo-shadow me-2">
+                <span class="fw-bold" style="letter-spacing: -0.5px; color: var(--secondary-color);">Rentam</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link px-3" href="listings.html">Find House</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="agent-register.html">Become an Agent</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="login.html">Login</a></li>
+                    <li class="nav-item"><a class="nav-link btn btn-primary text-white ms-lg-3" href="signup.html">Join Rentam</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero position-relative">
+        <div id="heroCarousel" class="carousel slide carousel-fade position-absolute w-100 h-100" data-bs-ride="carousel" style="top:0; left:0; z-index: 0;">
+            <div class="carousel-inner h-100">
+                <div class="carousel-item active h-100" data-bs-interval="3500" style="background: linear-gradient(to right, rgba(10,38,71,0.95), rgba(10,38,71,0.5)), url('https://images.unsplash.com/photo-1518780664697-55e3ad937233?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover;"></div>
+                <div class="carousel-item h-100" data-bs-interval="3500" style="background: linear-gradient(to right, rgba(10,38,71,0.95), rgba(10,38,71,0.5)), url('https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover;"></div>
+                <div class="carousel-item h-100" data-bs-interval="3500" style="background: linear-gradient(to right, rgba(10,38,71,0.95), rgba(10,38,71,0.5)), url('https://images.unsplash.com/photo-1554995207-c18c203602cb?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover;"></div>
+            </div>
+        </div>
+        <div class="container position-relative" style="z-index: 1;">
+            <h1 class="display-4 fw-bold mb-3">Find Your Next Home in Nigeria</h1>
+            <p class="lead mb-4">Affordable hostels, self-contains, and apartments for students and professionals. Verified agents. Peace of mind.</p>
+        </div>
+    </header>
+
+    <!-- Search Section -->
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 search-box">
+                <form class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Location</label>
+                        <select class="form-select search-select">
+                            <option selected>Select State / Institution</option>
+                            <option>UNILAG, Lagos</option>
+                            <option>OAU, Ile-Ife</option>
+                            <option>UNN, Nsukka</option>
+                            <option>UNIZIK, Awka</option>
+                            <option>ABU, Zaria</option>
+                            <option>Nwafor Orizu College of Education, Nsugbe</option>
+                            <option>UNIPORT, Port Harcourt</option>
+                            <option>FUTO, Owerri</option>
+                            <option>Covenant University, Ota</option>
+                            <option>Babcock University, Ilishan-Remo</option>
+                            <option>UNILORIN, Ilorin</option>
+                            <option>UNIBEN, Benin</option>
+                            <option>UI, Ibadan</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Property Type</label>
+                        <select class="form-select">
+                            <option selected>All Types</option>
+                            <option>Hostel</option>
+                            <option>Self-Contain</option>
+                            <option>Apartment</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Price Range</label>
+                        <select class="form-select">
+                            <option selected>Any Price</option>
+                            <option>Under ₦100,000</option>
+                            <option>₦100k - ₦300k</option>
+                            <option>₦300k - ₦500k</option>
+                            <option>Above ₦500k</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-secondary w-100">Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Listings -->
+    <section class="py-5 mt-5">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold">Featured Listings</h2>
+                <a href="listings.html" class="text-decoration-none text-primary fw-bold">View All <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="row g-4" id="featured-listings">
+                <!-- Listing Card 1 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 property-card">
+                        <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Property">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <span class="badge bg-success mb-2">Verified Agent</span>
+                                <span class="price-tag">₦250,000/yr</span>
+                            </div>
+                            <h5 class="card-title fw-bold">Modern Self-Contain</h5>
+                            <p class="text-muted"><i class="fas fa-map-marker-alt text-primary"></i> Near UNILAG Gate, Akoka</p>
+                            <hr>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">Agent: Chinedu Property</small>
+                                <a href="details.html" class="btn btn-outline-primary btn-sm">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Listing Card 2 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 property-card">
+                        <img src="https://images.unsplash.com/photo-1554995207-c18c203602cb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Property">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <span class="badge bg-success mb-2">Verified Agent</span>
+                                <span class="price-tag">₦120,000/yr</span>
+                            </div>
+                            <h5 class="card-title fw-bold">NOCEN Student Hostel</h5>
+                            <p class="text-muted"><i class="fas fa-map-marker-alt text-primary"></i> Nsugbe, Near Nwafor Orizu College</p>
+                            <hr>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">Agent: Wisdom Housing</small>
+                                <a href="details.html" class="btn btn-outline-primary btn-sm">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Listing Card 3 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 property-card">
+                        <img src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Property">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <span class="badge bg-warning text-dark mb-2">Top Listing</span>
+                                <span class="price-tag">₦400,000/yr</span>
+                            </div>
+                            <h5 class="card-title fw-bold">2 Bedroom Flat</h5>
+                            <p class="text-muted"><i class="fas fa-map-marker-alt text-primary"></i> Ifite, Near UNIZIK</p>
+                            <hr>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">Agent: Prince Realty</small>
+                                <a href="details.html" class="btn btn-outline-primary btn-sm">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Listing Card 4 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 property-card">
+                        <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Property">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <span class="badge bg-success mb-2">Verified</span>
+                                <span class="price-tag">₦150,000/yr</span>
+                            </div>
+                            <h5 class="card-title fw-bold">Premium Hostel Space (En-suite)</h5>
+                            <p class="text-muted"><i class="fas fa-map-marker-alt text-primary"></i> Ekosodin, Near UNIBEN</p>
+                            <hr>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">Agent: Winner Estates</small>
+                                <a href="details.html" class="btn btn-outline-primary btn-sm">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Listing Card 5 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 property-card">
+                        <img src="https://images.unsplash.com/photo-1598228723654-411cbbbc3277?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Property">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <span class="badge bg-success mb-2">New</span>
+                                <span class="price-tag">₦180,000/yr</span>
+                            </div>
+                            <h5 class="card-title fw-bold">Standard Self-Contain</h5>
+                            <p class="text-muted"><i class="fas fa-map-marker-alt text-primary"></i> Hilltop, Near UNN Nsukka</p>
+                            <hr>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">Agent: Lion Homes</small>
+                                <a href="details.html" class="btn btn-outline-primary btn-sm">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Listing Card 6 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 property-card">
+                        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="card-img-top" alt="Property">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <span class="badge bg-warning text-dark mb-2">Hot Deal</span>
+                                <span class="price-tag">₦300,000/yr</span>
+                            </div>
+                            <h5 class="card-title fw-bold">1 Bedroom Apartment</h5>
+                            <p class="text-muted"><i class="fas fa-map-marker-alt text-primary"></i> Ihiagwa, Near FUTO</p>
+                            <hr>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">Agent: Prime Shelters</small>
+                                <a href="details.html" class="btn btn-outline-primary btn-sm">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="py-5 bg-white">
+        <div class="container text-center py-5">
+            <h2 class="fw-bold mb-5">How Rentam Works</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="p-4">
+                        <div class="fs-1 text-primary mb-3"><i class="fas fa-search-location"></i></div>
+                        <h4 class="fw-bold">Search Location</h4>
+                        <p class="text-muted">Enter your university or desired state and browse through verified listings.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-4">
+                        <div class="fs-1 text-secondary mb-3"><i class="fas fa-comments"></i></div>
+                        <h4 class="fw-bold">Contact Agent</h4>
+                        <p class="text-muted">Chat directly with the Verified Agent on WhatsApp or through regular calls.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-4">
+                        <div class="fs-1 text-success mb-3"><i class="fas fa-home"></i></div>
+                        <h4 class="fw-bold">Move In</h4>
+                        <p class="text-muted">Inspect the property, secure your apartment, and move in effortlessly.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-5" style="background-color: var(--bg-color);">
+        <div class="container py-4">
+            <h2 class="fw-bold text-center mb-5">What Our Users Say</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card border-0 p-4 shadow-sm rounded-4 h-100">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="https://i.pravatar.cc/100?img=1" class="rounded-circle me-3" width="50" height="50">
+                            <div>
+                                <h6 class="fw-bold mb-0">Chika N.</h6>
+                                <small class="text-muted">UNIZIK Student</small>
+                            </div>
+                        </div>
+                        <p class="text-muted fst-italic">"I was stranded in Awka looking for a self-contain. Rentam connected me to a verified agent who got me a place near Ifite in just 2 days!"</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-0 p-4 shadow-sm rounded-4 h-100">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="https://i.pravatar.cc/100?img=2" class="rounded-circle me-3" width="50" height="50">
+                            <div>
+                                <h6 class="fw-bold mb-0">David O.</h6>
+                                <small class="text-muted">UNILAG Student</small>
+                            </div>
+                        </div>
+                        <p class="text-muted fst-italic">"The AI Assistant 'Winner' is incredible. I asked it for hostels below 150k in Akoka and it guided me exactly to what I needed."</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-0 p-4 shadow-sm rounded-4 h-100">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="https://i.pravatar.cc/100?img=3" class="rounded-circle me-3" width="50" height="50">
+                            <div>
+                                <h6 class="fw-bold mb-0">Amaka Housing</h6>
+                                <small class="text-muted">Verified Agent</small>
+                            </div>
+                        </div>
+                        <p class="text-muted fst-italic">"Since I registered as a verified agent on Rentam, my phone rings daily. Students trust the platform, which makes my business boom."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Assistant Component -->
+    <div id="winner-chat-bubble" onclick="toggleChat()">
+        <i class="fas fa-robot"></i>
+        <span class="ms-2">AI Agent Winner</span>
+    </div>
+
+    <div id="chat-window">
+        <div class="chat-header">
+            <span><i class="fas fa-robot"></i> Winner AI</span>
+            <button class="btn btn-sm text-white" onclick="toggleChat()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="chat-body" id="chat-content">
+            <div class="message winner">
+                English: Hello, I’m Winner. How can I assist you today?<br>
+                Pidgin: How I go take help you today?<br>
+                Igbo: Kedu ka m ga-esi nyere gị aka?
+            </div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="user-input" class="form-control" placeholder="Type a message...">
+            <button class="btn btn-secondary" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+            <button class="btn btn-primary" onclick="startVoice()"><i class="fas fa-microphone"></i></button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container text-center">
+            <p>&copy; 2026 Rentam Nigeria. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/app.js"></script>
+</body>
+</html>

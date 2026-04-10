@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Details | Rentam Nigeria</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <img src="rentam logo.jpeg" alt="Rentam Logo" height="40" class="rounded logo-shadow me-2">
+                <span class="fw-bold" style="letter-spacing: -0.5px; color: var(--secondary-color);">Rentam</span>
+            </a>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <div id="propertyCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+                    <div class="carousel-inner rounded-4 shadow">
+                        <div class="carousel-item active">
+                            <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?fit=crop&w=1200&h=600&q=80" class="d-block w-100" alt="...">
+                        </div>
+                    </div>
+                </div>
+                <h1 class="fw-bold">Modern Self-Contain at Akoka</h1>
+                <p class="text-muted"><i class="fas fa-map-marker-alt"></i> Near UNILAG Gate, Akoka, Lagos</p>
+                <hr>
+                <h3>Description</h3>
+                <p>This is a modern, fully tiled self-contain apartment located just 5 minutes walk from the UNILAG main gate. Features include constant water supply, secure environment, and prepay meter.</p>
+                <div class="d-flex gap-3 my-4">
+                    <button class="btn btn-primary" onclick="window.open('https://wa.me/2348000000000')"><i class="fab fa-whatsapp"></i> Chat with Agent</button>
+                    <button class="btn btn-secondary" onclick="toggleChat()"><i class="fas fa-robot"></i> Ask AI about this property</button>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card p-4 sticky-top" style="top: 100px;">
+                    <h2 class="price-tag mb-3">₦250,000 <small class="text-muted">/ yr</small></h2>
+                    <ul class="list-unstyled mb-4">
+                        <li><i class="fas fa-check-circle text-success me-2"></i> Running Water</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i> Secure Fence</li>
+                        <li><i class="fas fa-check-circle text-success me-2"></i> Resident Security</li>
+                    </ul>
+                    <div class="agent-info d-flex align-items-center mb-3">
+                        <img src="https://i.pravatar.cc/50" class="rounded-circle me-3" alt="Agent">
+                        <div>
+                            <h6 class="mb-0">Chinedu Property</h6>
+                            <small class="text-muted">Verified Agent</small>
+                        </div>
+                    </div>
+                    <a href="tel:+2348000000000" class="btn btn-outline-primary w-100 mb-2">Call Agent</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Assistant -->
+    <div id="winner-chat-bubble" onclick="toggleChat()"><i class="fas fa-robot"></i></div>
+    <div id="chat-window">
+        <!-- Same as index.html header/body/footer -->
+        <div class="chat-header"><span>Winner AI</span><button class="btn btn-sm text-white" onclick="toggleChat()">X</button></div>
+        <div class="chat-body" id="chat-content"></div>
+        <div class="chat-footer">
+            <input type="text" id="user-input" class="form-control" placeholder="Ask about this house...">
+            <button class="btn btn-secondary" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

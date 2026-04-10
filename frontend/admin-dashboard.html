@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Rentam Nigeria</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .admin-sidebar {
+            height: 100vh;
+            background-color: var(--primary-color);
+            color: white;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            padding-top: 20px;
+        }
+        .admin-sidebar a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            padding: 15px 20px;
+            display: block;
+            transition: 0.3s;
+        }
+        .admin-sidebar a:hover, .admin-sidebar a.active {
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+            border-left: 4px solid var(--secondary-color);
+        }
+        .admin-main {
+            margin-left: 250px;
+            padding: 30px;
+            background-color: var(--bg-color);
+            min-height: 100vh;
+        }
+        .dash-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        .dash-card:hover {
+            transform: translateY(-5px);
+        }
+        .bg-soft-warning { background-color: rgba(255, 193, 7, 0.1); color: #ffc107; }
+        .bg-soft-success { background-color: rgba(25, 135, 84, 0.1); color: #198754; }
+        .bg-soft-primary { background-color: rgba(13, 110, 253, 0.1); color: #0d6efd; }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="admin-sidebar shadow">
+        <div class="text-center mb-4">
+            <img src="rentam logo.jpeg" alt="Rentam" height="50" class="rounded logo-shadow bg-white p-1 mb-2">
+            <h5 class="fw-bold">Admin Panel</h5>
+            <small class="text-light">winnerchinazor@gmail.com</small>
+        </div>
+        <hr class="mx-3 opacity-25">
+        <a href="#dashboard" class="active" onclick="switchTab('dashboard')"><i class="fas fa-home me-2"></i> Dashboard</a>
+        <a href="#agents" onclick="switchTab('agents')"><i class="fas fa-id-card me-2"></i> Pending Agents <span class="badge bg-danger ms-2">3</span></a>
+        <a href="#properties" onclick="switchTab('properties')"><i class="fas fa-building me-2"></i> Pending Properties <span class="badge bg-warning text-dark ms-2">5</span></a>
+        <a href="index.html" class="mt-5 text-danger"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="admin-main">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold text-dark mb-0" id="page-title">Dashboard Overview</h2>
+            <button class="btn btn-outline-primary shadow-sm"><i class="fas fa-sync-alt me-2"></i>Refresh Data</button>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div id="tab-dashboard" class="tab-content">
+            <div class="row g-4 mb-5">
+                <div class="col-md-4">
+                    <div class="card dash-card p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1 fw-bold">Pending Properties</p>
+                                <h3 class="fw-bold mb-0">5</h3>
+                            </div>
+                            <div class="fs-1 bg-soft-warning p-3 rounded-circle"><i class="fas fa-hourglass-half"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card dash-card p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1 fw-bold">Agents to Verify</p>
+                                <h3 class="fw-bold mb-0">3</h3>
+                            </div>
+                            <div class="fs-1 bg-soft-primary p-3 rounded-circle"><i class="fas fa-user-clock"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card dash-card p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1 fw-bold">Active Listings</p>
+                                <h3 class="fw-bold mb-0">124</h3>
+                            </div>
+                            <div class="fs-1 bg-soft-success p-3 rounded-circle"><i class="fas fa-check-circle"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card dash-card border-0 p-4">
+                <h5 class="fw-bold mb-4">Recent Platform Activity</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item px-0 py-3 d-flex align-items-center">
+                        <div class="bg-soft-primary p-2 rounded-circle me-3"><i class="fas fa-user-plus"></i></div>
+                        <div>
+                            <h6 class="mb-0 fw-bold">New Agent Registration</h6>
+                            <small class="text-muted">Chinedu Property just submitted an ID card for verification.</small>
+                        </div>
+                        <small class="text-muted ms-auto">2 mins ago</small>
+                    </li>
+                    <li class="list-group-item px-0 py-3 d-flex align-items-center">
+                        <div class="bg-soft-warning p-2 rounded-circle me-3"><i class="fas fa-home text-warning"></i></div>
+                        <div>
+                            <h6 class="mb-0 fw-bold">New Property Warning</h6>
+                            <small class="text-muted">Agent 'Winner Estates' uploaded "Self-Contain in Akoka". Requires approval.</small>
+                        </div>
+                        <small class="text-muted ms-auto">1 hour ago</small>
+                    </li>
+                     <li class="list-group-item px-0 py-3 d-flex align-items-center">
+                        <div class="bg-soft-success p-2 rounded-circle me-3"><i class="fas fa-check text-success"></i></div>
+                        <div>
+                            <h6 class="mb-0 fw-bold">Property Approved</h6>
+                            <small class="text-muted">You approved "2 Bedroom Flat near UNIZIK". Email sent to Agent.</small>
+                        </div>
+                        <small class="text-muted ms-auto">3 hours ago</small>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Pending Agents Tab -->
+        <div id="tab-agents" class="tab-content" style="display: none;">
+            <div class="card dash-card border-0 p-4">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Agent Name</th>
+                                <th>Business Name</th>
+                                <th>Email / Phone</th>
+                                <th>ID Document</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="agent-row-1">
+                                <td>
+                                    <h6 class="mb-0 fw-bold">Chinedu Okafor</h6>
+                                    <small class="text-muted">Reg: Today</small>
+                                </td>
+                                <td>Chinedu Property</td>
+                                <td>
+                                    chinedu@mail.com<br>
+                                    <small class="text-muted"><i class="fab fa-whatsapp text-success"></i> +2348011223344</small>
+                                </td>
+                                <td><a href="#" class="btn btn-sm btn-outline-secondary"><i class="fas fa-id-card"></i> View NIN</a></td>
+                                <td><span class="badge bg-warning text-dark">Pending</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-success shadow-sm me-1" onclick="approveAgent('agent-row-1', 'Chinedu')"><i class="fas fa-check"></i> Approve</button>
+                                    <button class="btn btn-sm btn-danger shadow-sm" onclick="rejectRow('agent-row-1')"><i class="fas fa-times"></i></button>
+                                </td>
+                            </tr>
+                            <tr id="agent-row-2">
+                                <td>
+                                    <h6 class="mb-0 fw-bold">Uche Wisdom</h6>
+                                    <small class="text-muted">Reg: Yesterday</small>
+                                </td>
+                                <td>Wisdom Homes Ltd</td>
+                                <td>
+                                    wisdom@mail.com<br>
+                                    <small class="text-muted"><i class="fab fa-whatsapp text-success"></i> +2348055667788</small>
+                                </td>
+                                <td><a href="#" class="btn btn-sm btn-outline-secondary"><i class="fas fa-id-card"></i> View Driver's Lic</a></td>
+                                <td><span class="badge bg-warning text-dark">Pending</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-success shadow-sm me-1" onclick="approveAgent('agent-row-2', 'Uche')"><i class="fas fa-check"></i> Approve</button>
+                                    <button class="btn btn-sm btn-danger shadow-sm" onclick="rejectRow('agent-row-2')"><i class="fas fa-times"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Properties Tab -->
+        <div id="tab-properties" class="tab-content" style="display: none;">
+             <div class="row g-4">
+                <!-- Pending Card 1 -->
+                <div class="col-md-6" id="prop-row-1">
+                    <div class="card dash-card border-0 flex-row">
+                        <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=300" class="card-img-left" alt="..." style="width: 200px; object-fit: cover; border-radius: 15px 0 0 15px;">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">Modern Self-Contain</h5>
+                            <h6 class="text-primary fw-bold mb-2">₦250,000 /yr</h6>
+                            <p class="text-muted small mb-2"><i class="fas fa-map-marker-alt"></i> Near UNILAG Gate</p>
+                            <div class="d-flex align-items-center mb-3">
+                                <span class="badge bg-warning text-dark me-2">Pending Approval</span>
+                                <small class="text-muted">By: Chinedu Property</small>
+                            </div>
+                            <button class="btn btn-sm btn-success w-100 shadow-sm mb-2" onclick="approveProperty('prop-row-1', 'Modern Self-Contain')"><i class="fas fa-check-circle"></i> Approve & Publish</button>
+                            <button class="btn btn-sm btn-outline-danger w-100 shadow-sm" onclick="rejectRow('prop-row-1')"><i class="fas fa-times-circle"></i> Reject Listing</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Pending Card 2 -->
+                <div class="col-md-6" id="prop-row-2">
+                    <div class="card dash-card border-0 flex-row">
+                        <img src="https://images.unsplash.com/photo-1554995207-c18c203602cb?w=300" class="card-img-left" alt="..." style="width: 200px; object-fit: cover; border-radius: 15px 0 0 15px;">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">NOCEN Student Hostel</h5>
+                            <h6 class="text-primary fw-bold mb-2">₦120,000 /yr</h6>
+                            <p class="text-muted small mb-2"><i class="fas fa-map-marker-alt"></i> Nsugbe, Near NOCEN</p>
+                            <div class="d-flex align-items-center mb-3">
+                                <span class="badge bg-warning text-dark me-2">Pending Approval</span>
+                                <small class="text-muted">By: Wisdom Housing</small>
+                            </div>
+                            <button class="btn btn-sm btn-success w-100 shadow-sm mb-2" onclick="approveProperty('prop-row-2', 'NOCEN Student Hostel')"><i class="fas fa-check-circle"></i> Approve & Publish</button>
+                            <button class="btn btn-sm btn-outline-danger w-100 shadow-sm" onclick="rejectRow('prop-row-2')"><i class="fas fa-times-circle"></i> Reject Listing</button>
+                        </div>
+                    </div>
+                </div>
+             </div>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap & Notifications -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // UI Logic for Switching Tabs
+        function switchTab(tabId) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
+            // Show selected tab
+            document.getElementById('tab-' + tabId).style.display = 'block';
+            
+            // Update Sidebar Active state
+            document.querySelectorAll('.admin-sidebar a').forEach(a => a.classList.remove('active'));
+            document.querySelector(`.admin-sidebar a[href="#${tabId}"]`).classList.add('active');
+
+            // Update Page Title
+            const titles = {
+                'dashboard': 'Dashboard Overview',
+                'agents': 'Agent Verification Queue',
+                'properties': 'Properties Pending Approval'
+            };
+            document.getElementById('page-title').innerText = titles[tabId];
+        }
+
+        // Action Handlers
+        function approveAgent(rowId, name) {
+            alert(`Approval Email sent to ${name}! They have been granted Agent limits.`);
+            // Simulate Backend Call
+            /*
+            fetch('/api/admin/approve-agent/id', { method: 'PUT', body: JSON.stringify({status: 'approved'}) })
+            */
+            document.getElementById(rowId).style.display = 'none';
+        }
+
+        function approveProperty(rowId, title) {
+            alert(`Property "${title}" is now Live on the Website! Agent has been emailed.`);
+            document.getElementById(rowId).style.display = 'none';
+        }
+
+        function rejectRow(rowId) {
+            if(confirm("Are you sure you want to reject and delete this?")) {
+                document.getElementById(rowId).style.display = 'none';
+                alert("Rejected successfully. Email notification sent.");
+            }
+        }
+    </script>
+</body>
+</html>
