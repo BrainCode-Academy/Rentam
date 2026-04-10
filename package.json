@@ -2,7 +2,7 @@
   "name": "rentam-root",
   "version": "1.0.0",
   "scripts": {
-    "start": "node backend/server.js"
+    "start": "node api/index.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

@@ -1,13 +1,8 @@
 {
   "version": 2,
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/backend/server.js" },
-    { "source": "/uploads/(.*)", "destination": "/backend/uploads/$1" },
+    { "source": "/api/(.*)", "destination": "/api/index.js" },
+    { "source": "/uploads/(.*)", "destination": "/api/uploads/$1" },
     { "source": "/(.*)", "destination": "/frontend/$1" }
-  ],
-  "functions": {
-    "backend/server.js": {
-      "runtime": "nodejs20.x"
-    }
-  }
+  ]
 }
