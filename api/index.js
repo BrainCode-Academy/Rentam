@@ -31,20 +31,48 @@ app.use('/api/chat', require('./routes/chatRoutes'));
 
 // Database Connection
 const PORT = process.env.PORT || 5000;
-const MONGODB_URI = process.env.MONGODB_URI;
+let MONGODB_URI = process.env.MONGODB_URI;
 
-mongoose.connect(MONGODB_URI)
-    .then(() => {
+const startServer = async () => {
+    try {
+        if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+            // Serve frontend statically for local testing
+            app.use(express.static(path.join(__dirname, '../frontend')));
+            
+            // Use in-memory MongoDB if locally testing without real DB
+            if (MONGODB_URI.includes('127.0.0.1') || MONGODB_URI.includes('localhost') || MONGODB_URI.includes('dummy')) {
+                const { MongoMemoryServer } = require('mongodb-memory-server');
+                const mongoServer = await MongoMemoryServer.create();
+                MONGODB_URI = mongoServer.getUri();
+                console.log(`Using In-Memory MongoDB at ${MONGODB_URI}`);
+            }
+        }
+        
+        await mongoose.connect(MONGODB_URI);
         console.log('MongoDB Connected');
-        // Only start server if not running on Vercel
+        
+        // Auto-seed admin if using memory server or local
+        try {
+            const User = require('./models/User');
+            let admin = await User.findOne({ email: 'admin@rentam.com' });
+            if (!admin) {
+                await User.create({ name: 'System Admin', email: 'admin@rentam.com', password: 'password123', role: 'admin', phone: '+2348000000001' });
+                console.log('Admin user seeded: admin@rentam.com / password123');
+            }
+        } catch(err) {
+            console.error('Seeding error', err);
+        }
+
         if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
             app.listen(PORT, () => {
-                console.log(`Server running on port ${PORT}`);
+                console.log(`Server running on http://localhost:${PORT}`);
             });
         }
-    })
-    .catch(err => {
-        console.error('MongoDB connection error:', err);
-    });
+    } catch (err) {
+        console.error('Database connection error:', err);
+    }
+};
+
+startServer();
 
 module.exports = app;

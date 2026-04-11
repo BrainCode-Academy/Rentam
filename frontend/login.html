@@ -43,26 +43,37 @@
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
-            // Simple validation check against our Default Test accounts mapping
-            if(password !== 'password123') {
-                alert("Incorrect password. Please try password123");
-                return;
-            }
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                const data = await response.json();
 
-            if(email === 'admin@rentam.com') {
-                localStorage.setItem('rentamRole', 'admin');
-                alert('Welcome System Admin! Redirecting to dashboard...');
-                window.location.href = 'admin-dashboard.html';
-            } else if (email === 'agent@rentam.com') {
-                localStorage.setItem('rentamRole', 'agent');
-                alert('Welcome verified Agent! Redirecting to your listings...');
-                window.location.href = 'listings.html';
-            } else if (email === 'buyer@rentam.com') {
-                localStorage.setItem('rentamRole', 'user');
-                alert('Welcome Buyer! Find your next home.');
-                window.location.href = 'index.html';
-            } else {
-                alert('Account not found in test database. Please register.');
+                if (!response.ok) {
+                    alert("Error: " + (data.msg || "Invalid credentials"));
+                    return;
+                }
+
+                localStorage.setItem('rentamToken', data.token);
+                localStorage.setItem('rentamRole', data.user.role);
+                localStorage.setItem('rentamName', data.user.name);
+                
+                if(data.user.role === 'admin') {
+                    alert('Welcome System Admin! Redirecting to dashboard...');
+                    window.location.href = 'admin-dashboard.html';
+                } else if (data.user.role === 'agent') {
+                    alert('Welcome verified Agent! Redirecting to your listings...');
+                    window.location.href = 'listings.html';
+                } else {
+                    alert('Welcome Buyer! Find your next home.');
+                    window.location.href = 'index.html';
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Server error during login.");
             }
         });
     </script>

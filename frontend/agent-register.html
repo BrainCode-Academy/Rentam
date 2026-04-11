@@ -53,25 +53,46 @@
             document.getElementById('agentEmail').value = localStorage.getItem('tempAgentEmail');
         }
 
-        document.getElementById('agentRegForm').addEventListener('submit', function(e) {
+        document.getElementById('agentRegForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const agent = {
-                id: 'agent-' + Date.now(),
-                name: document.getElementById('agentName').value,
-                businessName: document.getElementById('businessName').value,
-                email: document.getElementById('agentEmail').value,
-                phone: document.getElementById('agentPhone').value,
-                date: new Date().toLocaleDateString()
-            };
+            const name = document.getElementById('agentName').value;
+            const businessName = document.getElementById('businessName').value;
+            const email = document.getElementById('agentEmail').value;
+            const phone = document.getElementById('agentPhone').value;
+            const password = localStorage.getItem('tempAgentPassword') || 'defaultPassword123';
+            
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        name, 
+                        email, 
+                        password, 
+                        role: 'agent', 
+                        agentProfile: { businessName, phone } 
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    alert("Error: " + (data.msg || "Registration failed"));
+                    return;
+                }
 
-            // Fetch existing agents from local storage
-            let pendingAgents = JSON.parse(localStorage.getItem('pendingAgents') || '[]');
-            pendingAgents.push(agent);
-            localStorage.setItem('pendingAgents', JSON.stringify(pendingAgents));
+                // Clear temp storage
+                localStorage.removeItem('tempAgentName');
+                localStorage.removeItem('tempAgentEmail');
+                localStorage.removeItem('tempAgentPassword');
 
-            alert("Registration successful! Your application has been sent to the Admin Dashboard for approval. You will receive an email shortly.");
-            window.location.href = 'index.html';
+                alert("Registration successful! Your application has been sent to the Admin Dashboard for approval. You will receive an email shortly.");
+                window.location.href = 'login.html';
+            } catch (err) {
+                console.error(err);
+                alert("Server error during registration.");
+            }
         });
     </script>
 </body>
