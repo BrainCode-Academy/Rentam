@@ -75,41 +75,22 @@
                     })
                 });
                 
+                const data = await response.json().catch(() => ({}));
+
                 if (response.ok) {
-                    const data = await response.json();
                     localStorage.removeItem('tempAgentName');
                     localStorage.removeItem('tempAgentEmail');
                     localStorage.removeItem('tempAgentPassword');
                     
-                    alert("Registration successful! Your application has been sent to the Admin Dashboard for approval. You will receive an email shortly.");
+                    alert("Registration successful! Your application has been sent to our Admin for approval. You can login once approved.");
                     window.location.href = 'login.html';
-                    return;
+                } else {
+                    alert("Registration failed: " + (data.msg || data.message || "Server Error"));
                 }
-                console.warn("Backend API returned error, activating demo mode.", response.status);
             } catch (err) {
-                console.warn("Backend unavailable, falling back to LocalStorage demo mode.", err);
+                console.error("Backend Error:", err);
+                alert("Network Error: Could not reach the server. Please try again later.");
             }
-
-            // DEMO MODE / FALLBACK
-            const agent = {
-                id: 'agent-' + Date.now(),
-                name,
-                businessName,
-                email,
-                phone,
-                date: new Date().toLocaleDateString()
-            };
-
-            let pendingAgents = JSON.parse(localStorage.getItem('pendingAgents') || '[]');
-            pendingAgents.push(agent);
-            localStorage.setItem('pendingAgents', JSON.stringify(pendingAgents));
-            
-            localStorage.removeItem('tempAgentName');
-            localStorage.removeItem('tempAgentEmail');
-            localStorage.removeItem('tempAgentPassword');
-
-            alert("Demo Mode Registration successful! Your application has been sent to the offline Admin Dashboard for approval.");
-            window.location.href = 'login.html';
         });
     </script>
 </body>
