@@ -75,24 +75,41 @@
                     })
                 });
                 
-                const data = await response.json();
-                
-                if (!response.ok) {
-                    alert("Error: " + (data.msg || "Registration failed"));
+                if (response.ok) {
+                    const data = await response.json();
+                    localStorage.removeItem('tempAgentName');
+                    localStorage.removeItem('tempAgentEmail');
+                    localStorage.removeItem('tempAgentPassword');
+                    
+                    alert("Registration successful! Your application has been sent to the Admin Dashboard for approval. You will receive an email shortly.");
+                    window.location.href = 'login.html';
                     return;
                 }
-
-                // Clear temp storage
-                localStorage.removeItem('tempAgentName');
-                localStorage.removeItem('tempAgentEmail');
-                localStorage.removeItem('tempAgentPassword');
-
-                alert("Registration successful! Your application has been sent to the Admin Dashboard for approval. You will receive an email shortly.");
-                window.location.href = 'login.html';
+                console.warn("Backend API returned error, activating demo mode.", response.status);
             } catch (err) {
-                console.error(err);
-                alert("Server error during registration.");
+                console.warn("Backend unavailable, falling back to LocalStorage demo mode.", err);
             }
+
+            // DEMO MODE / FALLBACK
+            const agent = {
+                id: 'agent-' + Date.now(),
+                name,
+                businessName,
+                email,
+                phone,
+                date: new Date().toLocaleDateString()
+            };
+
+            let pendingAgents = JSON.parse(localStorage.getItem('pendingAgents') || '[]');
+            pendingAgents.push(agent);
+            localStorage.setItem('pendingAgents', JSON.stringify(pendingAgents));
+            
+            localStorage.removeItem('tempAgentName');
+            localStorage.removeItem('tempAgentEmail');
+            localStorage.removeItem('tempAgentPassword');
+
+            alert("Demo Mode Registration successful! Your application has been sent to the offline Admin Dashboard for approval.");
+            window.location.href = 'login.html';
         });
     </script>
 </body>

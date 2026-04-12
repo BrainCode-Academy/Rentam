@@ -39,13 +39,7 @@ const startServer = async () => {
             // Serve frontend statically for local testing
             app.use(express.static(path.join(__dirname, '../frontend')));
             
-            // Use in-memory MongoDB if locally testing without real DB
-            if (MONGODB_URI.includes('127.0.0.1') || MONGODB_URI.includes('localhost') || MONGODB_URI.includes('dummy')) {
-                const { MongoMemoryServer } = require('mongodb-memory-server');
-                const mongoServer = await MongoMemoryServer.create();
-                MONGODB_URI = mongoServer.getUri();
-                console.log(`Using In-Memory MongoDB at ${MONGODB_URI}`);
-            }
+            // Removed In-memory DB override to allow local MongoDB persistence.
         }
         
         await mongoose.connect(MONGODB_URI);
