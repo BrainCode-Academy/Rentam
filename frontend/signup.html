@@ -69,32 +69,18 @@
                         body: JSON.stringify({ name, email, password, role })
                     });
                     
+                    const data = await response.json().catch(() => ({}));
+                    
                     if (response.ok) {
-                        const data = await response.json();
-                        localStorage.setItem('rentamToken', data.token);
-                        localStorage.setItem('rentamRole', 'user');
-                        localStorage.setItem('rentamName', name);
-                        alert("Account created successfully! Welcome to Rentam.");
-                        window.location.href = 'user-dashboard.html';
-                        return;
+                        alert("Account created successfully! Please proceed to login.");
+                        window.location.href = 'login.html';
+                    } else {
+                        alert("Registration failed: " + (data.msg || data.message || "Internal server error."));
                     }
-                    // If response is not ok, we fall through to fallback
-                    console.warn("Backend API returned error, activating demo mode.", response.status);
                 } catch (err) {
-                    console.warn("Backend unavailable, falling back to LocalStorage demo mode.", err);
+                    console.error("Backend unavailable:", err);
+                    alert("Network Error: Could not connect to the database. Please ensure you are viewing this via your live server or localhost:5000.");
                 }
-
-                // DEMO MODE FALLBACK
-                localStorage.setItem('rentamRole', 'user');
-                localStorage.setItem('rentamName', name);
-                
-                // Keep local records for admin testing in demo mode
-                let users = JSON.parse(localStorage.getItem('demoUsers') || '[]');
-                users.push({ id: Date.now(), name, email, role: 'user' });
-                localStorage.setItem('demoUsers', JSON.stringify(users));
-
-                alert("Demo Account created! Welcome to Rentam.");
-                window.location.href = 'user-dashboard.html';
             }
         });
     </script>
