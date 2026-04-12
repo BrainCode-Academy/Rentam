@@ -38,7 +38,7 @@
     <!-- Login Authentication Script -->
     <script>
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
-            e.preventDefault(); // Stop page from refreshing
+            e.preventDefault(); 
             
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
@@ -50,48 +50,29 @@
                     body: JSON.stringify({ email, password })
                 });
 
+                const data = await response.json().catch(() => ({}));
+
                 if (response.ok) {
-                    const data = await response.json();
                     localStorage.setItem('rentamToken', data.token);
                     localStorage.setItem('rentamRole', data.user.role);
                     localStorage.setItem('rentamName', data.user.name);
                     
                     if(data.user.role === 'admin') {
-                        alert('Welcome System Admin! Redirecting to dashboard...');
+                        alert('Welcome back, Admin!');
                         window.location.href = 'admin-dashboard.html';
                     } else if (data.user.role === 'agent') {
-                        alert('Welcome verified Agent! Redirecting to your listings...');
+                        alert('Welcome back, Agent!');
                         window.location.href = 'listings.html';
                     } else {
-                        alert('Welcome Buyer! Find your next home.');
+                        alert('Welcome back, ' + data.user.name + '!');
                         window.location.href = 'user-dashboard.html';
                     }
-                    return;
+                } else {
+                    alert('Login failed: ' + (data.msg || data.message || 'Invalid email or password.'));
                 }
-                console.warn("API login failed, falling back to demo mode check.");
             } catch (err) {
-                console.warn("Backend unavailable, falling back to demo mode.", err);
-            }
-
-            // DEMO MODE / FALLBACK LOGIN
-            if (password !== 'password123') {
-                alert("Incorrect password. In demo mode, please use 'password123'");
-                return;
-            }
-
-            if(email === 'admin@rentam.com') {
-                localStorage.setItem('rentamRole', 'admin');
-                alert('Demo Mode: Welcome System Admin!');
-                window.location.href = 'admin-dashboard.html';
-            } else if (email === 'agent@rentam.com') {
-                localStorage.setItem('rentamRole', 'agent');
-                alert('Demo Mode: Welcome verified Agent!');
-                window.location.href = 'listings.html';
-            } else {
-                localStorage.setItem('rentamRole', 'user');
-                localStorage.setItem('rentamName', email.split('@')[0]);
-                alert('Demo Mode: Welcome Buyer!');
-                window.location.href = 'user-dashboard.html';
+                console.error("Backend Error:", err);
+                alert("Network Error: Could not connect to the database. Please try again in a few seconds.");
             }
         });
     </script>
