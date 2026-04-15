@@ -30,6 +30,15 @@ router.get('/', async (req, res) => {
 // @desc    Add new property (Agent only)
 router.post('/', auth, async (req, res) => {
     if (req.user.role !== 'agent') return res.status(403).json({ msg: 'Only agents can list properties' });
+    
+    // Check if agent has paid and is verified
+    const agent = await User.findById(req.user.id);
+    if (!agent.agentProfile?.hasPaid) {
+        return res.status(403).json({ msg: 'You must pay the ₦5,000 membership fee before listing properties.' });
+    }
+    if (agent.agentProfile?.status !== 'approved') {
+        return res.status(403).json({ msg: 'Your account is pending admin verification.' });
+    }
     try {
         const newProperty = new Property({
             ...req.body,

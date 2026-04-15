@@ -250,7 +250,7 @@
     <script src="js/app.js"></script>
     
     <script>
-        // Load Dynamic Local Agents
+        // Load Dynamic Data
         document.addEventListener('DOMContentLoaded', async () => {
             const token = localStorage.getItem('rentamToken');
             if (!token) {
@@ -259,117 +259,122 @@
                 return;
             }
 
+            // --- 1. Load Pending Agents ---
             try {
-                const response = await fetch('/api/admin/pending-agents', {
+                const agentRes = await fetch('/api/admin/pending-agents', {
                     headers: { 'Authorization': 'Bearer ' + token }
                 });
-                if (!response.ok) {
-                    if (response.status === 403) {
-                        alert("Access denied. Admin only.");
-                        window.location.href = 'index.html';
+                if (agentRes.ok) {
+                    const pendingAgents = await agentRes.json();
+                    const tbody = document.getElementById('agentsTableBody');
+                    tbody.innerHTML = '';
+                    
+                    if(pendingAgents.length > 0) {
+                        pendingAgents.forEach(agent => {
+                            const rowId = agent._id;
+                            tbody.innerHTML += `
+                                <tr id="${rowId}">
+                                    <td><h6 class="mb-0 fw-bold text-primary">${agent.name}</h6><small>Reg: ${new Date(agent.createdAt).toLocaleDateString()}</small></td>
+                                    <td>${agent.agentProfile?.businessName || 'N/A'}</td>
+                                    <td>${agent.email}<br><small><i class="fab fa-whatsapp"></i> ${agent.agentProfile?.phone || agent.phone || 'N/A'}</small></td>
+                                    <td><button class="btn btn-sm btn-outline-secondary">View ID</button></td>
+                                    <td><span class="badge bg-warning text-dark">Pending</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-success shadow-sm me-1" onclick="approveAgent('${rowId}', 'approved')"><i class="fas fa-check"></i> Approve</button>
+                                        <button class="btn btn-sm btn-danger shadow-sm" onclick="approveAgent('${rowId}', 'rejected')"><i class="fas fa-times"></i></button>
+                                    </td>
+                                </tr>
+                            `;
+                        });
+                        document.getElementById('agentCountBadge1').innerText = pendingAgents.length;
+                        document.getElementById('agentCountBadge2').innerText = pendingAgents.length;
+                    } else {
+                        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4">No pending agents.</td></tr>';
                     }
-                    return;
                 }
-                const pendingAgents = await response.json();
-                
-                const tbody = document.getElementById('agentsTableBody');
-                tbody.innerHTML = '';
-                
-                if(pendingAgents.length > 0) {
-                    pendingAgents.forEach(agent => {
-                        const rowId = agent._id;
-                        const cleanName = agent.name.split(' ')[0] || 'Agent';
-                        tbody.innerHTML += `
-                            <tr id="${rowId}">
-                                <td>
-                                    <h6 class="mb-0 fw-bold text-primary">${agent.name} <span class="badge bg-info ms-1">NEW</span></h6>
-                                    <small class="text-muted">Role: Agent</small>
-                                </td>
-                                <td>${agent.agentProfile?.businessName || 'N/A'}</td>
-                                <td>
-                                    ${agent.email}<br>
-                                    <small class="text-muted"><i class="fab fa-whatsapp text-success"></i> ${agent.agentProfile?.phone || 'N/A'}</small>
-                                </td>
-                                <td><a href="#" class="btn btn-sm btn-outline-secondary"><i class="fas fa-id-card"></i> View Docs</a></td>
-                                <td><span class="badge bg-warning text-dark">Pending</span></td>
-                                <td>
-                                    <button class="btn btn-sm btn-success shadow-sm me-1" onclick="approveAgent('${rowId}', '${cleanName}', 'approved')"><i class="fas fa-check"></i> Approve</button>
-                                    <button class="btn btn-sm btn-danger shadow-sm" onclick="approveAgent('${rowId}', '${cleanName}', 'rejected')"><i class="fas fa-times"></i> Reject</button>
-                                </td>
-                            </tr>
-                        `;
-                    });
+            } catch (err) { console.error("Agent load error", err); }
 
-                    // Update Counts
-                    document.getElementById('agentCountBadge1').innerText = pendingAgents.length;
-                    document.getElementById('agentCountBadge2').innerText = pendingAgents.length;
-                } else {
-                    document.getElementById('agentCountBadge1').innerText = 0;
-                    document.getElementById('agentCountBadge2').innerText = 0;
-                    tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4">No pending agents awaiting approval.</td></tr>';
+            // --- 2. Load Pending Properties ---
+            try {
+                const propRes = await fetch('/api/admin/pending-properties', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                if (propRes.ok) {
+                    const pendingProps = await propRes.json();
+                    const propContainer = document.getElementById('tab-properties').querySelector('.row');
+                    propContainer.innerHTML = '';
+
+                    if(pendingProps.length > 0) {
+                        pendingProps.forEach(p => {
+                            propContainer.innerHTML += `
+                                <div class="col-md-6" id="prop-${p._id}">
+                                    <div class="card dash-card border-0 flex-row overflow-hidden">
+                                        <img src="${p.images && p.images[0] ? p.images[0] : 'https://via.placeholder.com/200'}" style="width: 150px; object-fit: cover;">
+                                        <div class="card-body p-3">
+                                            <h6 class="fw-bold mb-1">${p.title}</h6>
+                                            <p class="text-primary fw-bold mb-1">₦${p.price.toLocaleString()}</p>
+                                            <small class="text-muted d-block mb-2">Agent: ${p.agent?.name || 'Unknown'}</small>
+                                            <div class="d-flex gap-2">
+                                                <button class="btn btn-sm btn-success flex-grow-1" onclick="approveProperty('${p._id}', 'active')">Approve</button>
+                                                <button class="btn btn-sm btn-outline-danger" onclick="approveProperty('${p._id}', 'rejected')"><i class="fas fa-times"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                    } else {
+                        propContainer.innerHTML = '<div class="col-12 text-center py-5"><p class="text-muted">No pending properties awaiting approval.</p></div>';
+                    }
                 }
-            } catch (err) {
-                console.error("Failed to load agents:", err);
-            }
+            } catch (err) { console.error("Property load error", err); }
         });
 
         // UI Logic for Switching Tabs
         function switchTab(tabId) {
-            // Hide all tabs
             document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
-            // Show selected tab
             document.getElementById('tab-' + tabId).style.display = 'block';
-            
-            // Update Sidebar Active state
             document.querySelectorAll('.admin-sidebar a').forEach(a => a.classList.remove('active'));
-            document.querySelector(`.admin-sidebar a[href="#${tabId}"]`).classList.add('active');
-
-            // Update Page Title
-            const titles = {
-                'dashboard': 'Dashboard Overview',
-                'agents': 'Agent Verification Queue',
-                'properties': 'Properties Pending Approval'
-            };
-            document.getElementById('page-title').innerText = titles[tabId];
+            document.querySelector(`.admin-sidebar a[href="#${tabId}"]`)?.classList.add('active');
+            
+            const titles = { 'dashboard': 'Dashboard Overview', 'agents': 'Agent Verification Queue', 'properties': 'Properties Pending Approval' };
+            document.getElementById('page-title').innerText = titles[tabId] || 'Admin Panel';
         }
 
-        // Action Handlers
-        async function approveAgent(rowId, name, status) {
+        async function approveAgent(agentId, status) {
             const token = localStorage.getItem('rentamToken');
+            if(!confirm(`Are you sure you want to ${status} this agent?`)) return;
             try {
-                const response = await fetch(`/api/admin/approve-agent/${rowId}`, {
+                const res = await fetch(`/api/admin/approve-agent/${agentId}`, {
                     method: 'PUT',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + token
-                    },
+                    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
                     body: JSON.stringify({ status })
                 });
-
-                if (response.ok) {
-                    alert(`Agent status has been updated to: ${status}! Warning: real email might fail if credentials are missing.`);
-                    document.getElementById(rowId).style.display = 'none';
-                } else {
-                    const data = await response.json();
-                    alert("Error: " + data.msg);
+                if (res.ok) {
+                    alert(`Agent account ${status} successfully.`);
+                    document.getElementById(agentId).style.display = 'none';
                 }
-            } catch (err) {
-                console.error(err);
-                alert("Server error when updating agent.");
-            }
+            } catch (err) { alert("Error processing request"); }
         }
 
-        function approveProperty(rowId, title) {
-            alert(`Property "${title}" is now Live on the Website! Agent has been emailed.`);
-            document.getElementById(rowId).style.display = 'none';
+        async function approveProperty(propId, status) {
+            const token = localStorage.getItem('rentamToken');
+            if(!confirm(`Are you sure you want to ${status === 'active' ? 'approve' : 'reject'} this property?`)) return;
+            try {
+                const res = await fetch(`/api/admin/approve-property/${propId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+                    body: JSON.stringify({ status })
+                });
+                if (res.ok) {
+                    alert(`Property ${status === 'active' ? 'approved and live' : 'rejected'} successfully.`);
+                    document.getElementById('prop-' + propId).style.display = 'none';
+                }
+            } catch (err) { alert("Error processing request"); }
         }
-
 
         function rejectRow(rowId) {
-            if(confirm("Are you sure you want to reject and delete this?")) {
-                document.getElementById(rowId).style.display = 'none';
-                alert("Rejected successfully. Email notification sent.");
-            }
+            document.getElementById(rowId).style.display = 'none';
         }
     </script>
 </body>

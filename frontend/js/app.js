@@ -52,7 +52,7 @@ function updateNavbar() {
     if (token) {
         let dashboardPage = 'user-dashboard.html';
         if (role === 'admin') dashboardPage = 'admin-dashboard.html';
-        if (role === 'agent') dashboardPage = 'listings.html'; // Or agent dashboard if exists
+        if (role === 'agent') dashboardPage = 'agent-dashboard.html';
 
         authSection.innerHTML = `
             <li class="nav-item">

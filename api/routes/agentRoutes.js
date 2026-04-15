@@ -32,4 +32,19 @@ router.get('/', async (req, res) => {
     }
 });
 
+// @route   POST /api/agents/pay-membership
+// @desc    Simulate paying agent membership fee
+router.post('/pay-membership', auth, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+        if (!user || user.role !== 'agent') return res.status(400).json({ msg: 'Forbidden' });
+
+        user.agentProfile.hasPaid = true;
+        await user.save();
+        res.json({ msg: 'Payment successful! You can now post properties once approved by admin.' });
+    } catch (err) {
+        res.status(500).send('Server error');
+    }
+});
+
 module.exports = router;

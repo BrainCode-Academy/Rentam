@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema({
         whatsappNumber: String,
         idCardUrl: String,
         isVerified: { type: Boolean, default: false },
+        hasPaid: { type: Boolean, default: false },
         status: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' }
     },
     savedProperties: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Property' }],
