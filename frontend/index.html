@@ -26,11 +26,14 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center">
+                <ul class="navbar-nav ms-auto align-items-center" id="navbar-links">
                     <li class="nav-item"><a class="nav-link px-3" href="listings.html">Find House</a></li>
                     <li class="nav-item"><a class="nav-link px-3" href="agent-register.html">Become an Agent</a></li>
-                    <li class="nav-item"><a class="nav-link px-3" href="login.html">Login</a></li>
-                    <li class="nav-item"><a class="nav-link btn btn-primary text-white ms-lg-3" href="signup.html">Join Rentam</a></li>
+                    <!-- Dynamic Auth Links -->
+                    <div id="auth-section" class="d-lg-flex align-items-center">
+                        <li class="nav-item"><a class="nav-link px-3" href="login.html">Login</a></li>
+                        <li class="nav-item"><a class="nav-link btn btn-primary text-white ms-lg-3" href="signup.html">Join Rentam</a></li>
+                    </div>
                 </ul>
             </div>
         </div>
@@ -55,43 +58,29 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-10 search-box">
-                <form class="row g-3">
+                <form class="row g-3" action="listings.html" method="GET">
                     <div class="col-md-4">
                         <label class="form-label fw-bold">Location</label>
-                        <select class="form-select search-select">
-                            <option selected>Select State / Institution</option>
-                            <option>UNILAG, Lagos</option>
-                            <option>OAU, Ile-Ife</option>
-                            <option>UNN, Nsukka</option>
-                            <option>UNIZIK, Awka</option>
-                            <option>ABU, Zaria</option>
-                            <option>Nwafor Orizu College of Education, Nsugbe</option>
-                            <option>UNIPORT, Port Harcourt</option>
-                            <option>FUTO, Owerri</option>
-                            <option>Covenant University, Ota</option>
-                            <option>Babcock University, Ilishan-Remo</option>
-                            <option>UNILORIN, Ilorin</option>
-                            <option>UNIBEN, Benin</option>
-                            <option>UI, Ibadan</option>
+                        <select class="form-select search-select" name="location">
+                            <option selected value="">Select State / Institution</option>
                         </select>
                     </div>
                     <div class="col-md-3">
                         <label class="form-label fw-bold">Property Type</label>
-                        <select class="form-select">
-                            <option selected>All Types</option>
-                            <option>Hostel</option>
-                            <option>Self-Contain</option>
-                            <option>Apartment</option>
+                        <select class="form-select" name="type">
+                            <option selected value="">All Types</option>
+                            <option value="hostel">Hostel</option>
+                            <option value="self-contain">Self-Contain</option>
+                            <option value="apartment">Apartment</option>
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label fw-bold">Price Range</label>
-                        <select class="form-select">
-                            <option selected>Any Price</option>
-                            <option>Under ₦100,000</option>
-                            <option>₦100k - ₦300k</option>
-                            <option>₦300k - ₦500k</option>
-                            <option>Above ₦500k</option>
+                        <label class="form-label fw-bold">Max Price</label>
+                        <select class="form-select" name="price">
+                            <option selected value="1000000">Any Price</option>
+                            <option value="100000">Under ₦100,000</option>
+                            <option value="300000">Under ₦300,000</option>
+                            <option value="500000">Under ₦500,000</option>
                         </select>
                     </div>
                     <div class="col-md-2 d-flex align-items-end">

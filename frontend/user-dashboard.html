@@ -219,27 +219,15 @@
         </main>
     </div>
 
+    <!-- Global Logic -->
+    <script src="js/app.js"></script>
     <script>
+        // Additional dashboard-specific UI updates
         document.addEventListener('DOMContentLoaded', () => {
-            const userName = localStorage.getItem('rentamName') || 'User';
-            const userRole = localStorage.getItem('rentamRole');
-            const token = localStorage.getItem('rentamToken');
-
-            if (!token) {
-                window.location.href = 'login.html';
-                return;
-            }
-
-            document.getElementById('userNameDis').innerText = userName;
-            document.getElementById('welcomeName').innerText = userName;
+            const name = localStorage.getItem('rentamName') || 'User';
+            if(document.getElementById('userNameDis')) document.getElementById('userNameDis').innerText = name;
+            if(document.getElementById('welcomeName')) document.getElementById('welcomeName').innerText = name;
         });
-
-        function logout() {
-            localStorage.removeItem('rentamToken');
-            localStorage.removeItem('rentamName');
-            localStorage.removeItem('rentamRole');
-            window.location.href = 'index.html';
-        }
     </script>
 </body>
 </html>

@@ -36,8 +36,68 @@ universitiesList.forEach((uni, index) => {
     });
 });
 
-// --- 2. INITIALIZE DOM DROPDOWNS & SIDEBARS ---
+// --- 2. SESSION & AUTH MANAGEMENT ---
+function getAuthData() {
+    const token = localStorage.getItem('rentamToken');
+    const role = localStorage.getItem('rentamRole');
+    const name = localStorage.getItem('rentamName');
+    return { token, role, name };
+}
+
+function updateNavbar() {
+    const { token, role, name } = getAuthData();
+    const authSection = document.getElementById('auth-section');
+    if (!authSection) return;
+
+    if (token) {
+        let dashboardPage = 'user-dashboard.html';
+        if (role === 'admin') dashboardPage = 'admin-dashboard.html';
+        if (role === 'agent') dashboardPage = 'listings.html'; // Or agent dashboard if exists
+
+        authSection.innerHTML = `
+            <li class="nav-item">
+                <a class="nav-link px-3 fw-bold" href="${dashboardPage}">
+                    <i class="fas fa-user-circle me-1"></i> ${name.split(' ')[0]}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link btn btn-outline-danger btn-sm ms-lg-3 py-1" href="#" onclick="logout()">Logout</a>
+            </li>
+        `;
+    }
+}
+
+function logout() {
+    localStorage.removeItem('rentamToken');
+    localStorage.removeItem('rentamRole');
+    localStorage.removeItem('rentamName');
+    alert('Logged out successfully');
+    window.location.href = 'index.html';
+}
+
+function requireAuth(roleRequired = null) {
+    const { token, role } = getAuthData();
+    if (!token) {
+        window.location.href = 'login.html';
+        return false;
+    }
+    if (roleRequired && role !== roleRequired) {
+        alert('Unauthorized access');
+        window.location.href = 'index.html';
+        return false;
+    }
+    return true;
+}
+
+// --- 3. INITIALIZE DOM DROPDOWNS & SIDEBARS ---
 document.addEventListener('DOMContentLoaded', () => {
+    updateNavbar();
+    
+    // Check for dashboard protection
+    const path = window.location.pathname;
+    if (path.includes('user-dashboard')) requireAuth('user');
+    if (path.includes('admin-dashboard')) requireAuth('admin');
+
     // Populate Index Search Dropdown
     const indexSelect = document.querySelector('.search-select');
     if (indexSelect) {
@@ -60,13 +120,38 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         });
         
-        // Initial render of all properties on listings page
-        renderProperties(mockProperties);
+        // --- 3a. Handle URL Parameters for Searches ---
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlLoc = urlParams.get('location');
+        const urlType = urlParams.get('type');
+        const urlPrice = urlParams.get('price');
+
+        if (urlLoc || urlType || urlPrice) {
+            // Apply initial filter based on URL
+            const initialFiltered = mockProperties.filter(p => {
+                const matchesLocation = !urlLoc || p.location.includes(urlLoc);
+                const matchesType = !urlType || p.type === urlType;
+                const matchesPrice = !urlPrice || p.price <= parseInt(urlPrice);
+                return matchesLocation && matchesType && matchesPrice;
+            });
+            renderProperties(initialFiltered);
+            
+            // Set values in sidebar UI if possible
+            if (urlLoc) {
+                const cb = Array.from(document.querySelectorAll('.loc-checkbox')).find(c => c.value === urlLoc);
+                if (cb) cb.checked = true;
+            }
+            if (urlPrice && document.getElementById('priceRange')) {
+                document.getElementById('priceRange').value = urlPrice;
+            }
+        } else {
+            renderProperties(mockProperties);
+        }
     }
 });
 
 
-// --- 3. FILTERING LOGIC (For listings.html) ---
+// --- 4. FILTERING LOGIC (For listings.html) ---
 function applyFilters() {
     // 1. Get Checked Locations
     const locCheckboxes = document.querySelectorAll('.loc-checkbox:checked');
@@ -91,12 +176,20 @@ function applyFilters() {
 }
 
 // Add event listener to price range slider if it exists
-if(document.getElementById('priceRange')) {
-    document.getElementById('priceRange').addEventListener('input', applyFilters);
-}
-// Add event listener to the "Apply Filters" button in sidebar
+document.addEventListener('input', (e) => {
+    if (e.target.id === 'priceRange') {
+        applyFilters();
+    }
+});
+
 function triggerFilter() {
     applyFilters();
+}
+
+function resetFilters() {
+    document.querySelectorAll('.loc-checkbox').forEach(cb => cb.checked = false);
+    if(document.getElementById('priceRange')) document.getElementById('priceRange').value = 1000000;
+    renderProperties(mockProperties);
 }
 
 function renderProperties(properties) {

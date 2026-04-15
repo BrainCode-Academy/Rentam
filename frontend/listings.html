@@ -23,11 +23,14 @@
                 <span class="fw-bold" style="letter-spacing: -0.5px; color: var(--secondary-color);">Rentam</span>
             </a>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center">
+                <ul class="navbar-nav ms-auto align-items-center" id="navbar-links">
                     <li class="nav-item"><a class="nav-link px-3 active" href="listings.html">Find House</a></li>
                     <li class="nav-item"><a class="nav-link px-3" href="agent-register.html">Become an Agent</a></li>
-                    <li class="nav-item"><a class="nav-link px-3" href="login.html">Login</a></li>
-                    <li class="nav-item"><a class="nav-link btn btn-primary text-white ms-lg-3" href="signup.html">Join Rentam</a></li>
+                    <!-- Dynamic Auth Links -->
+                    <div id="auth-section" class="d-lg-flex align-items-center">
+                        <li class="nav-item"><a class="nav-link px-3" href="login.html">Login</a></li>
+                        <li class="nav-item"><a class="nav-link btn btn-primary text-white ms-lg-3" href="signup.html">Join Rentam</a></li>
+                    </div>
                 </ul>
             </div>
         </div>
