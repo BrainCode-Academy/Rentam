@@ -46,8 +46,24 @@
             </div>
     </div>
     
+    <!-- Global Logic -->
+    <script src="js/app.js"></script>
     <script>
-        // Auto-fill from signup if they came from there
+        const token = localStorage.getItem('rentamToken');
+
+        // UI Adjustments if logged in
+        if(token) {
+            document.getElementById('agentName').closest('.mb-3').classList.add('d-none');
+            document.getElementById('agentEmail').closest('.mb-3').classList.add('d-none');
+            document.querySelector('.text-center.mt-3').classList.add('d-none');
+            document.querySelector('h2').innerText = "Upgrade to Agent Account";
+            
+            // Set required false for hidden fields
+            document.getElementById('agentName').required = false;
+            document.getElementById('agentEmail').required = false;
+        }
+
+        // Auto-fill if redirected from signup
         if(localStorage.getItem('tempAgentName')) {
             document.getElementById('agentName').value = localStorage.getItem('tempAgentName');
             document.getElementById('agentEmail').value = localStorage.getItem('tempAgentEmail');
@@ -56,23 +72,34 @@
         document.getElementById('agentRegForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const name = document.getElementById('agentName').value;
             const businessName = document.getElementById('businessName').value;
-            const email = document.getElementById('agentEmail').value;
             const phone = document.getElementById('agentPhone').value;
-            const password = localStorage.getItem('tempAgentPassword') || 'defaultPassword123';
             
             try {
-                const response = await fetch('/api/register', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        name, 
-                        email, 
-                        password, 
-                        role: 'agent', 
-                        agentProfile: { businessName, phone } 
-                    })
+                let url = '/api/register';
+                let method = 'POST';
+                let body = { 
+                    name: document.getElementById('agentName').value,
+                    email: document.getElementById('agentEmail').value,
+                    password: localStorage.getItem('tempAgentPassword') || 'defaultPassword123',
+                    role: 'agent',
+                    agentProfile: { businessName, phone }
+                };
+
+                // If logged in, use the apply endpoint
+                if (token) {
+                    url = '/api/agents/apply';
+                    method = 'PUT';
+                    body = { businessName, phone };
+                }
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': token ? `Bearer ${token}` : ''
+                    },
+                    body: JSON.stringify(body)
                 });
                 
                 const data = await response.json().catch(() => ({}));
@@ -82,14 +109,21 @@
                     localStorage.removeItem('tempAgentEmail');
                     localStorage.removeItem('tempAgentPassword');
                     
-                    alert("Registration successful! Your application has been sent to our Admin for approval. You can login once approved.");
-                    window.location.href = 'login.html';
+                    if (token) {
+                        alert("Application submitted! Your account is now being reviewed by our Admin.");
+                        // Update local role
+                        localStorage.setItem('rentamRole', 'agent');
+                        window.location.href = 'agent-dashboard.html';
+                    } else {
+                        alert("Registration successful! Your application has been sent to our Admin. You can login once approved.");
+                        window.location.href = 'login.html';
+                    }
                 } else {
-                    alert("Registration failed: " + (data.msg || data.message || "Server Error"));
+                    alert("Submission failed: " + (data.msg || data.message || "Server Error"));
                 }
             } catch (err) {
                 console.error("Backend Error:", err);
-                alert("Network Error: Could not reach the server. Please try again later.");
+                alert("Network Error: Could not reach the server.");
             }
         });
     </script>

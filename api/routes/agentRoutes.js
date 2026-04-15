@@ -3,9 +3,43 @@ const router = express.Router();
 const User = require('../models/User');
 const auth = require('../middleware/auth');
 
+// @route   PUT /api/agents/apply
+// @desc    Existing user applies to become an agent
+router.put('/apply', auth, async (req, res) => {
+    try {
+        const { businessName, whatsappNumber, phone } = req.body;
+        const user = await User.findById(req.user.id);
+        
+        if (!user) return res.status(404).json({ msg: 'User not found' });
+
+        user.role = 'agent';
+        user.agentProfile = {
+            businessName,
+            whatsappNumber: whatsappNumber || phone,
+            phone: phone,
+            status: 'pending',
+            isVerified: false,
+            hasPaid: user.agentProfile?.hasPaid || false
+        };
+
+        await user.save();
+
+        // Notify Admin
+        const sendEmail = require('../utils/sendEmail');
+        await sendEmail({
+            email: 'winnerchinazor@gmail.com',
+            subject: 'New Agent Application',
+            message: `User ${user.name} (${user.email}) has applied to become an agent. Business: ${businessName}.`
+        });
+
+        res.json({ msg: 'Application submitted! Awaiting admin approval.', user });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server error');
+    }
+});
+
 // @route   PUT /api/agents/verify/:id
-// @desc    Verify an agent (Admin only)
-router.put('/verify/:id', auth, async (req, res) => {
     if (req.user.role !== 'admin') return res.status(403).json({ msg: 'Access denied' });
     try {
         const user = await User.findById(req.params.id);
