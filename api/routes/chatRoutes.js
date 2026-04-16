@@ -62,8 +62,13 @@ ${JSON.stringify(simplifiedProperties)}
 
         res.json({ response: aiResponseText });
     } catch (err) {
-        console.error('OpenAI / Chat Route Error:', err);
-        res.status(500).json({ error: 'AI Assistant is currently unavailable. Please check API keys.' });
+        console.error('--- OPENAI ERROR ---');
+        console.error('Status:', err.status);
+        console.error('Message:', err.message);
+        res.status(err.status || 500).json({ 
+            error: 'AI Assistant unavailable', 
+            details: err.message 
+        });
     }
 });
 
